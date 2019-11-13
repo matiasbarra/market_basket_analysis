@@ -6,8 +6,9 @@
 # of directors to better understand the clientele that Electronidex is currently 
 # serving and if Electronidex would be an optimal acquisition
 
+
 ####--------------- Set Enviroment ---------------------------------------------####
-load required libraries
+# load required libraries
 if(require("pacman")=="FALSE"){
   install.packages("pacman")
 }
@@ -21,7 +22,7 @@ Data <- read.csv("./data/ElectronidexTransactions2017.csv", header = F)# read tr
 sum(Data !="") # check total number of products sold
 
 setwd("/Users/matiasbarra/Documents/Data_Analytics_Course/Data_Analytics_2/4_Discover_Associations_Between_Products")
-categories <- read.csv("./data/prodCategories.csv", header = F)# read categories as df
+categories <- read.csv("./data/prodCategories.csv", header = T)# read categories as df
 
 # read "transactions.csv" as basket to perform association rules analysis
 Data <- read.transactions("./data/ElectronidexTransactions2017.csv", 
@@ -43,13 +44,12 @@ itemLabels(Data)# To see the item labels
 ProductLabels <- as.data.frame(itemLabels(Data))
 ProductLabels
 
-categories$V1 <- NULL
+write.csv(ProductLabels, file="ProductLabels.csv", row.names = F)
+
 colnames(categories)[1] <- "Product"
 colnames(categories)[2] <- "Category"
 
-write.csv(ProductLabels, file="ProductLabels.csv", row.names = F)
 
-str(prodCat) # categories need to be included as labels to the items in tr 
 
 
 ####--------- data transformation ----------------------------------------------------#### 
@@ -125,6 +125,7 @@ plotly_arules(rules, method = "two-key plot")
 ruleExplorer(rules)
 ruleExplorer(rules1)
 ruleExplorer(iMacRule)
+ruleExplorer(rule_category)
 
 # add jitter, change color and markers and add a title
 plotly_arules(rules, jitter = 10, 
